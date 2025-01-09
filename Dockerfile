@@ -4,8 +4,6 @@ FROM python:3.9-slim
 #Set the working directory isnide the container
 WORKDIR /app
 
-RUN pip install --no-cache-dir -r requirements.txt
-
 # Expose the port the app will run on
 EXPOSE 8080
 
