@@ -7,7 +7,7 @@ WORKDIR /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expose the port the app will run on
-EXPOSE 80
+EXPOSE 8080
 
 # Command to run the application (change it based on how you run your Python code)
 CMD python arithmatic_operations.py && python test_arithmatic_operations.py
