@@ -1,6 +1,8 @@
 #Use an official python runtime as a base image
 FROM python:3.9-slim
 
+RUN apt-get update && apt-get upgrade -y
+
 #Set the working directory isnide the container
 WORKDIR /app
 
