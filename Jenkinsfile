@@ -37,23 +37,20 @@ pipeline {
                 }
             }
         }
-        stage('SonarQube Analysis') {
-            steps {
-                // Run SonarQube analysis
-                script {
-                    withSonarQubeEnv('SonarQube') {  // This should match the 'Name' of SonarQube you configured
-                        sh '''
-                            ./venv/bin/python -m pip install pytest
-                            sonar-scanner \
-                                -Dsonar.projectKey=your_project_key \
-                                -Dsonar.projectName=your_project_name \
-                                -Dsonar.sources=. \
-                                -Dsonar.python.coverage.reportPaths=coverage.xml
-                        '''
-                    }
-                }
-            }
-        }
+        stage('SonarQube Analysis') { 
+            steps { 
+                withSonarQubeEnv(SONARQUBE_SERVER) { 
+                    sh 'mvn sonar:sonar' 
+                } 
+            } 
+        } 
+        stage('SonarQube Analysis') { 
+            steps { 
+                withSonarQubeEnv(SONARQUBE_SERVER) { 
+                    sh 'mvn sonar:sonar' 
+                } 
+            } 
+        } 
     }
     post {
         success {
