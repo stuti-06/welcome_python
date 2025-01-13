@@ -3,8 +3,7 @@ pipeline {
 
     environment {
         // Define the SonarQube server and scanner
-        SONARQUBE_SERVER = 'SonarQube'  // This should match the SonarQube server name you configured in Jenkins
-        SONARQUBE_SCANNER = 'SonarQube Scanner'  // This is the scanner you configured
+        SONARQUBE_SERVER = 'SonarQube Scanner'  // This should match the SonarQube server name you configured in Jenkins
     }
     
     stages {
@@ -42,20 +41,27 @@ pipeline {
             steps {
                 // Run SonarQube analysis
                 script {
-                    // Run the SonarQube Scanner with the required parameters
-                    withSonarQubeEnv(SONARQUBE_SERVER) {
-                        sh """
+                    withSonarQubeEnv('SonarQube') {  // This should match the 'Name' of SonarQube you configured
+                        sh '''
                             ./venv/bin/python -m pip install pytest
                             sonar-scanner \
                                 -Dsonar.projectKey=your_project_key \
                                 -Dsonar.projectName=your_project_name \
                                 -Dsonar.sources=. \
                                 -Dsonar.python.coverage.reportPaths=coverage.xml
-                        """
+                        '''
                     }
                 }
             }
         }
-        
+    }
+    post {
+        success {
+            echo 'SonarQube Analysis Completed Successfully'
+        }
+
+        failure {
+            echo 'SonarQube Analysis Failed'
+        }
     }
 }
