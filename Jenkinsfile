@@ -12,6 +12,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/stuti-06/welcome_python.git'
             }
         }
+        
         stage('Build Docker Image') {
             steps {
                 script {
@@ -19,24 +20,27 @@ pipeline {
                 }
             }
         }
+        
         stage('Run Docker Container') {
             steps {
                 script {
                     // Check if a container with the name 'code' exists and remove it if it does
                     sh 'docker rm -f code || true'
 
-                    // Run new container
+                    // Run a new container
                     sh 'docker run -d -p 80:80 --name code operations'
                 }
             }
         }
-         stage('Trivy Scan') {
+        
+        stage('Trivy Scan') {
             steps {
                 script {
-                     sh 'trivy image operations'
+                    sh 'trivy image operations'
                 }
             }
         }
+
         stage('SonarQube Analysis') { 
             steps { 
                 // Use the 'withSonarQubeEnv' step to inject the SonarQube environment variables
@@ -52,15 +56,8 @@ pipeline {
                 }
             }
         }
-
-        stage('SonarQube Analysis') { 
-            steps { 
-                withSonarQubeEnv(SONARQUBE_SERVER) { 
-                    sh 'mvn sonar:sonar' 
-                } 
-            } 
-        } 
     }
+
     post {
         success {
             echo 'SonarQube Analysis Completed Successfully'
