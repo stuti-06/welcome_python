@@ -21,5 +21,17 @@ pipeline {
                 }
             }
         }
+         stage('Trivy Scan') {
+            steps {
+                script {
+                    // Run Trivy to scan the Docker image for vulnerabilities
+                    // --exit-code 1 will fail the build if any vulnerabilities are found
+                    // --severity HIGH,CRITICAL will only show high and critical vulnerabilities
+                    sh "trivy image --exit-code 1 --severity HIGH,CRITICAL operations"
+                }
+            }
+        }
+
+        
     }
 }
