@@ -39,11 +39,20 @@ pipeline {
         }
         stage('SonarQube Analysis') { 
             steps { 
-                withSonarQubeEnv(SONARQUBE_SERVER) { 
-                    sh 'mvn sonar:sonar' 
-                } 
-            } 
-        } 
+                // Use the 'withSonarQubeEnv' step to inject the SonarQube environment variables
+                withSonarQubeEnv('SONARQUBE_SERVER') { 
+                    // Run the SonarScanner for Python analysis
+                    sh '''
+                        sonar-scanner \
+                            -Dsonar.projectKey=my-python-project \
+                            -Dsonar.sources=. \
+                            -Dsonar.python.version=3.8 \
+                            -Dsonar.python.pylint.reportPath=pylint-report.json
+                    '''
+                }
+            }
+        }
+
         stage('SonarQube Analysis') { 
             steps { 
                 withSonarQubeEnv(SONARQUBE_SERVER) { 
