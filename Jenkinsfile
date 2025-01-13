@@ -16,6 +16,9 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
+                    // Check if a container with the name 'code' exists and remove it if it does
+                    sh 'docker rm -f code || true'
+
                     // Run new container
                     sh 'docker run -d -p 80:80 --name code operations'
                 }
