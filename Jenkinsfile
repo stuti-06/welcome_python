@@ -27,13 +27,5 @@ pipeline {
                 }
             }
         }
-        
-        stage('Trivy Scan') {
-            steps {
-                script {
-                    sh 'trivy image operations'
-                }
-            }
-        }
     }
 }
