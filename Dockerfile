@@ -3,6 +3,11 @@ FROM python:3.9-slim
 
 RUN apt-get update && apt-get upgrade -y
 
+# Install Trivy
+RUN wget https://github.com/aquasecurity/trivy/releases/download/v0.32.0/trivy_0.32.0_Linux-64bit.deb && \
+    dpkg -i trivy_0.32.0_Linux-64bit.deb && \
+    rm trivy_0.32.0_Linux-64bit.deb
+
 #Set the working directory isnide the container
 WORKDIR /app
 
