@@ -27,12 +27,16 @@ pipeline {
                 }
             }
         }
-        stage('Trivy Scan') {
-            steps {
-                script {
-                    sh 'trivy image operations'
-                }
-            }
+
+        stage('SCM') {
+            checkout scm
         }
+        stage('SonarQube Analysis') {
+            def scannerHome = tool 'SonarScanner';
+            withSonarQubeEnv() {
+              sh "${scannerHome}/bin/sonar-scanner"
+            }
+          }
+        
     }
 }
